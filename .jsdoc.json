@@ -4,6 +4,7 @@
   },
   "source": {
     "include": "lib/",
+    "exclude": ["lib/amountItems/index.js", "lib/address/index.js", "lib/indicativeArea/index.js"],
     "includePattern": ".js$",
     "excludePattern": "(node_modules/|docs)"
   },

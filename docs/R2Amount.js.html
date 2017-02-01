@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>R2Amount.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Address.html">Address</a></li><li><a href="AmountIndicative.html">AmountIndicative</a></li><li><a href="D0Issuer.html">D0Issuer</a></li><li><a href="Fees.html">Fees</a></li><li><a href="FixedIncomeProducts.html">FixedIncomeProducts</a></li><li><a href="IncomeSubjectToIncomeTax.html">IncomeSubjectToIncomeTax</a></li><li><a href="IndicativeArea.html">IndicativeArea</a></li><li><a href="IssuerAddress.html">IssuerAddress</a></li><li><a href="IssuerIndicativeArea.html">IssuerIndicativeArea</a></li><li><a href="R1Recipient.html">R1Recipient</a></li><li><a href="R2Amount.html">R2Amount</a></li><li><a href="RCM.html">RCM</a><ul class='methods'><li data-type='method'><a href="RCM.html#addRecipient">addRecipient</a></li><li data-type='method'><a href="RCM.html#export">export</a></li></ul></li><li><a href="RecipientAddress.html">RecipientAddress</a></li><li><a href="RecipientIndicativeArea.html">RecipientIndicativeArea</a></li><li><a href="T0Totalization.html">T0Totalization</a></li><li><a href="TaxCredit.html">TaxCredit</a></li></ul><h3>Modules</h3><ul><li><a href="module-utils.html">utils</a><ul class='methods'><li data-type='method'><a href="module-utils.html#~fillWith">fillWith</a></li><li data-type='method'><a href="module-utils.html#~fillWithPattern">fillWithPattern</a></li><li data-type='method'><a href="module-utils.html#~wordPad">wordPad</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">R2Amount.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {fillWithPattern} from './utils.js';
+import {FixedIncomeProducts, TaxCredit, Fees, IncomeSubjectToIncomeTax} from './amountItems';
+
+/**
+ * R2Amount Class
+ *
+ * R 2 Zone
+ */
+class R2Amount {
+  /**
+   * @param  {AmountIndicativeArea}      amountIndicativeArea
+   * @param  {TaxCredit}                 taxCredit
+   * @param  {Object}                    R213R22 (unimplemented)
+   * @param  {Object}                    R226R230 (unimplemented)
+   * @param  {Object}                    R231 (unimplemented)
+   * @param  {IncomeSubjectToIncomeTax}  incomeSubjectToIncomeTax
+   * @param  {FixedIncomeProducts}       fixedIncomeProducts
+   * @param  {Object}                    R249R250 (unimplemented)
+   * @param  {Fees}                      fees
+   * @param  {Object}                    R261R271 (unimplemented)
+   */
+  constructor(
+    amountIndicativeArea,
+    taxCredit,
+    R213R225,
+    R226R230,
+    R231,
+    incomeSubjectToIncomeTax,
+    fixedIncomeProducts,
+    R249R250,
+    fees,
+    R261R271
+  ) {
+    this.amountIndicativeArea = amountIndicativeArea;
+    this.taxCredit = taxCredit;
+    this.R213R22 = R213R225;
+    this.R226R230 = R226R230;
+    this.R231 = R231;
+    this.incomeSubjectToIncomeTax = incomeSubjectToIncomeTax;
+    this.fixedIncomeProducts = fixedIncomeProducts;
+    this.R249R250 = R249R250;
+    this.fees = fees;
+    this.R261R271 = R261R271;
+  }
+
+  export() {
+    return [
+      ...this.amountIndicativeArea.export(),
+      ...((this.taxCredit) ? this.taxCredit.export() : TaxCredit.default()),
+      ...fillWithPattern('10N10N10N10N10N10X10N10N10N10N'),
+      ...fillWithPattern('10N10N10N'),
+      ...fillWithPattern('10N'),
+      ...((this.incomeSubjectToIncomeTax) ? this.incomeSubjectToIncomeTax.export() : IncomeSubjectToIncomeTax.default()),
+      ...((this.fixedIncomeProducts) ? this.fixedIncomeProducts.export() : FixedIncomeProducts.default()),
+      ...fillWithPattern('10N10N'),
+      ...((this.fees) ? this.fees.export() : Fees.default()),
+      ...fillWithPattern('10N10N19X')
+    ];
+  }
+
+  validation() {
+    this.amountIndicativeArea.validation();
+
+    if (this.taxCredit) {
+      this.taxCredit.validation();
+    }
+
+    if (this.grossAmountRevenues) {
+      this.grossAmountRevenues.validation();
+    }
+
+    if (this.incomeSubjectToIncomeTax) {
+      this.incomeSubjectToIncomeTax.validation();
+    }
+
+    if (this.fixedIncomeProducts) {
+      this.fixedIncomeProducts.validation();
+    }
+
+    if (this.fees) {
+      this.fees.validation();
+    }
+
+    return true;
+  }
+}
+
+export default R2Amount;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Feb 01 2017 18:09:40 GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
