@@ -2,7 +2,7 @@
 
 GIT_DEPLOY_REPO=${GIT_DEPLOY_REPO:-$(node -e 'process.stdout.write(require("./package.json").repository.url)')}
 
-cd website && \
+cd docs && \
 rm -rf .git
 git init && \
 git config user.name \"Codeship\" && \
