@@ -1,20 +1,22 @@
 import test from 'ava';
 import R1Recipient from '../lib/R1Recipient.js';
 
+import ValidationError from '../lib/ValidationError.js';
 import RecipientIndicativeArea from '../lib/indicativeArea/RecipientIndicativeArea';
 import RecipientAddress from '../lib/address/RecipientAddress';
 
+const recipientIndicativeArea = new RecipientIndicativeArea({
+  year: '2016',
+  siret: '80426417400017',
+  type: 1,
+  recipientCode: 'B'
+});
+const address = new RecipientAddress({
+  zipCode: '75009',
+  officeDistributor: 'Paris'
+});
+
 test('R1Recipient set data', t => {
-  const recipientIndicativeArea = new RecipientIndicativeArea({
-    year: '2016',
-    siret: '80426417400017',
-    type: 1,
-    recipientCode: 'B'
-  });
-  const address = new RecipientAddress({
-    zipCode: '75009',
-    officeDistributor: 'Paris'
-  });
   const recipient = {
     socialReason: 'Lendix SA'
   };
@@ -36,16 +38,6 @@ test('R1Recipient set data', t => {
 });
 
 test('R1Recipient validation', t => {
-  const recipientIndicativeArea = new RecipientIndicativeArea({
-    year: '2016',
-    siret: '80426417400017',
-    type: 1,
-    recipientCode: 'B'
-  });
-  const address = new RecipientAddress({
-    zipCode: '75009',
-    officeDistributor: 'Paris'
-  });
   const recipient = {
     socialReason: 'Lendix SA'
   };
@@ -62,17 +54,63 @@ test('R1Recipient validation', t => {
   t.true(r1.validation());
 });
 
+[{
+  data: {
+    recipient: {
+      socialReason: 'Lendix SA'
+    },
+    birth: {
+      year: 1980,
+      month: 5,
+      day: 22,
+      departementCode: '69',
+      city: 'Lyon'
+    }
+  },
+}, {
+  data: {
+    recipient: {
+      socialReason: 'Lendix SA'
+    },
+    birth: {
+      year: 1980,
+      month: 5,
+      day: 22,
+      departementCode: '69',
+      city: 'Lorem ipsum dolor sit amet, consectetur'
+    }
+  },
+  errors: { city: ['City is too long (maximum is 26 characters)'] }
+}, {
+  data: {
+    recipient: {},
+    birth: {
+      year: 1980,
+      month: 5,
+      day: 22,
+      departementCode: '69',
+      city: 'Paris'
+    }
+  },
+  errors: { socialReason: ['Social reason can\'t be blank'] }
+}].forEach(({ data, errors }) => {
+  test(`validation ${JSON.stringify(data)}`, t => {
+    const r1 = new R1Recipient(recipientIndicativeArea, 1, data.recipient, data.birth, address);
+
+    if (!errors) {
+      t.true(r1.validation());
+    } else {
+      const error = t.throws(() => {
+        r1.validation()
+      }, ValidationError);
+
+      t.is(error.name, 'ValidationError');
+      t.deepEqual(error.errors, errors);
+    }
+  });
+});
+
 test('R1Recipient export', t => {
-  const recipientIndicativeArea = new RecipientIndicativeArea({
-    year: '2016',
-    siret: '80426417400017',
-    type: 1,
-    recipientCode: 'B'
-  });
-  const address = new RecipientAddress({
-    zipCode: '75009',
-    officeDistributor: 'Paris'
-  });
   const recipient = {
     socialReason: 'Lendix SA'
   };
