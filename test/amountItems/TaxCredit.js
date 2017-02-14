@@ -41,6 +41,8 @@ test('throw on export is data is invalid', t => {
 }, {
   data: { AA: '38', AJ: '8', AD: '65' },
 }, {
+  data: { AA: 0, AJ: 0, AD: 0 }
+}, {
   data: { AA: 'lol', AJ: 'lol', AD: 'lol' },
   errors: { AA: [ 'Aa is not a number' ], AJ: [ 'Aj is not a number' ], AD: [ 'Ad is not a number' ] }
 }, {
@@ -48,10 +50,7 @@ test('throw on export is data is invalid', t => {
   errors: { AA: [ 'Aa must be an integer' ], AJ: [ 'Aj must be an integer' ], AD: [ 'Ad must be an integer' ] }
 },  {
   data: { AA: -1, AJ: -1, AD: -1 },
-  errors: { AA: [ 'Aa must be greater than or equal to 1' ], AJ: [ 'Aj must be greater than or equal to 1' ], AD: [ 'Ad must be greater than or equal to 1' ] }
-}, {
-  data: { AA: 0, AJ: 0, AD: 0 },
-  errors: { AA: [ 'Aa must be greater than or equal to 1' ], AJ: [ 'Aj must be greater than or equal to 1' ], AD: [ 'Ad must be greater than or equal to 1' ] }
+  errors: { AA: [ 'Aa must be greater than or equal to 0' ], AJ: [ 'Aj must be greater than or equal to 0' ], AD: [ 'Ad must be greater than or equal to 0' ] }
 }, {
   data: { AA: 12345678901, AJ: 12345678901, AD: 12345678901 },
   errors: { AA: [ 'Aa must be less than or equal to 9999999999' ], AJ: [ 'Aj must be less than or equal to 9999999999' ], AD: [ 'Ad must be less than or equal to 9999999999' ] }

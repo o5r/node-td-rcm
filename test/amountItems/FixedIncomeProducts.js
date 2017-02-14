@@ -39,6 +39,8 @@ test('throw on export is data is invalid', t => {
 }, {
   data: { AR: '38', AS: '8' },
 }, {
+  data: { AR: 0, AS: 0 }
+}, {
   data: { AR: 'lol', AS: 'lol' },
   errors: { AR: [ 'Ar is not a number' ], AS: [ 'As is not a number' ] }
 }, {
@@ -46,10 +48,7 @@ test('throw on export is data is invalid', t => {
   errors: { AR: [ 'Ar must be an integer' ], AS: [ 'As must be an integer' ] }
 },  {
   data: { AR: -1, AS: -1 },
-  errors: { AR: [ 'Ar must be greater than or equal to 1' ], AS: [ 'As must be greater than or equal to 1' ] }
-}, {
-  data: { AR: 0, AS: 0 },
-  errors: { AR: [ 'Ar must be greater than or equal to 1' ], AS: [ 'As must be greater than or equal to 1' ] }
+  errors: { AR: [ 'Ar must be greater than or equal to 0' ], AS: [ 'As must be greater than or equal to 0' ] }
 }, {
   data: { AR: 12345678901, AS: 12345678901 },
   errors: { AR: [ 'Ar must be less than or equal to 9999999999' ], AS: [ 'As must be less than or equal to 9999999999' ] }

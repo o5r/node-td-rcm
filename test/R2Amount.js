@@ -1,15 +1,18 @@
 import test from 'ava';
 import R2Amount from '../lib/R2Amount.js';
-
+import IndicativeArea from '../lib/indicativeArea/IndicativeArea';
 import AmountIndicativeArea from '../lib/indicativeArea/AmountIndicativeArea';
 import {TaxCredit, FixedIncomeProducts, Fees} from '../lib/amountItems';
 
+const indicativeArea = new IndicativeArea({
+  year: '2016',
+  siret: '80426417400017',
+  type: 1
+});
+
+const amountIndicativeArea = indicativeArea.amountR2();
+
 test('set data', t => {
-  const amountIndicativeArea = new AmountIndicativeArea({
-    year: '2016',
-    siret: '80426417400017',
-    type: 1
-  });
   const taxCredit = new TaxCredit({AD: 10});
   const fixedIncomeProducts = new FixedIncomeProducts({AR: 69});
   const fees = new Fees(9);
@@ -23,11 +26,6 @@ test('set data', t => {
 });
 
 test('validation', t => {
-  const amountIndicativeArea = new AmountIndicativeArea({
-    year: '2016',
-    siret: '80426417400017',
-    type: 1
-  });
   const taxCredit = new TaxCredit({AD: 10});
   const fixedIncomeProducts = new FixedIncomeProducts({AR: 69});
   const fees = new Fees(9);
@@ -38,11 +36,6 @@ test('validation', t => {
 });
 
 test('export', t => {
-  const amountIndicativeArea = new AmountIndicativeArea({
-    year: '2016',
-    siret: '80426417400017',
-    type: 1
-  });
   const taxCredit = new TaxCredit({AD: 10});
   const fixedIncomeProducts = new FixedIncomeProducts({AR: 69});
   const fees = new Fees(9);

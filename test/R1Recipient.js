@@ -1,14 +1,17 @@
 import test from 'ava';
 import R1Recipient from '../lib/R1Recipient.js';
-
 import ValidationError from '../lib/ValidationError.js';
+import IndicativeArea from '../lib/indicativeArea/IndicativeArea';
 import RecipientIndicativeArea from '../lib/indicativeArea/RecipientIndicativeArea';
 import RecipientAddress from '../lib/address/RecipientAddress';
 
-const recipientIndicativeArea = new RecipientIndicativeArea({
+const indicativeArea = new IndicativeArea({
   year: '2016',
   siret: '80426417400017',
-  type: 1,
+  type: 1
+});
+
+const recipientIndicativeArea = indicativeArea.recipient({
   recipientCode: 'B'
 });
 const address = new RecipientAddress({
