@@ -41,6 +41,8 @@ test('throw on export is data is invalid', t => {
 }, {
   data: { BS: '38', DQ: '8', BU: '65' },
 }, {
+  data: { BS: 0, DQ: 0, BU: 0 }
+}, {
   data: { BS: 'lol', DQ: 'lol', BU: 'lol' },
   errors: { BS: [ 'Bs is not a number' ], DQ: [ 'Dq is not a number' ], BU: [ 'Bu is not a number' ] }
 }, {
@@ -48,10 +50,7 @@ test('throw on export is data is invalid', t => {
   errors: { BS: [ 'Bs must be an integer' ], DQ: [ 'Dq must be an integer' ], BU: [ 'Bu must be an integer' ] }
 },  {
   data: { BS: -1, DQ: -1, BU: -1 },
-  errors: { BS: [ 'Bs must be greater than or equal to 1' ], DQ: [ 'Dq must be greater than or equal to 1' ], BU: [ 'Bu must be greater than or equal to 1' ] }
-}, {
-  data: { BS: 0, DQ: 0, BU: 0 },
-  errors: { BS: [ 'Bs must be greater than or equal to 1' ], DQ: [ 'Dq must be greater than or equal to 1' ], BU: [ 'Bu must be greater than or equal to 1' ] }
+  errors: { BS: [ 'Bs must be greater than or equal to 0' ], DQ: [ 'Dq must be greater than or equal to 0' ], BU: [ 'Bu must be greater than or equal to 0' ] }
 }, {
   data: { BS: 12345678901, DQ: 12345678901, BU: 12345678901 },
   errors: { BS: [ 'Bs must be less than or equal to 9999999999' ], DQ: [ 'Dq must be less than or equal to 9999999999' ], BU: [ 'Bu must be less than or equal to 9999999999' ] }

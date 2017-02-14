@@ -14,13 +14,11 @@ npm i td-rcm
 
 ```
 import {
-  IssuerIndicativeArea,
+  IndicativeArea,
   IssuerAddress,
   D0Issuer,
-  RecipientIndicativeArea,
   RecipientAddress,
   R1Recipient,
-  AmountIndicativeArea,
   TaxCredit,
   FixedIncomeProducts,
   IncomeSubjectToIncomeTax,
@@ -28,15 +26,15 @@ import {
   RCM
 } from 'td-rcm';
 
+const indicativeArea = new IndicativeArea({
+  year: '2016',
+  siret: '12345678912345',
+  type: 1
+});
+
 /*
   Article déclarant D0
  */
-const indicativeArea = new IssuerIndicativeArea({
-  year: '2016',
-  siret: '12345678912345',
-  type: 1,
-  socialReason: 'Loutre SAS',
-});
 const issuerAddress = new IssuerAddress({
   zipCode: '75009',
   streetNumber: '42',
@@ -45,24 +43,18 @@ const issuerAddress = new IssuerAddress({
   issuanceDate: '20161224'
 });
 
-const d0 = new D0Issuer(indicativeArea, issuerAddress);
+const d0 = new D0Issuer(indicativeArea.issuer({socialReason: 'Loutre SAS'}), issuerAddress);
 /* */
 
 /*
   Article Bénéficiaire R1
  */
-const recipientIndicativeArea = new RecipientIndicativeArea({
-  year: '2016',
-  siret: '12345678912345',
-  type: 1,
-  recipientCode: 'B'
-});
 const recipientAddress = new RecipientAddress({
   zipCode: '75012',
   officeDistributor: 'Paris'
 });
 
-const r1 = new R1Recipient(recipientIndicativeArea, 2, {
+const r1 = new R1Recipient(indicativeArea.recipient({recipientCode: 'B'}), 2, {
   familyname: 'Delorme',
   firstnames: 'George',
   sex: 1
@@ -78,16 +70,11 @@ const r1 = new R1Recipient(recipientIndicativeArea, 2, {
 /*
   Article Montant R2
  */
-const amountIndicativeArea = new AmountIndicativeArea({
-  year: '2016',
-  siret: '12345678912345',
-  type: 1
-});
 const taxCredit = new TaxCredit({AD: 9});
 const fixedIncomeProducts = new FixedIncomeProducts({AR: 38});
 const incomeSubjectToIncomeTax = new IncomeSubjectToIncomeTax({BU: 38});
 
-const r2 = new R2Amount(amountIndicativeArea, taxCredit, undefined, undefined, undefined, incomeSubjectToIncomeTax, fixedIncomeProducts, undefined, undefined, undefined);
+const r2 = new R2Amount(indicativeArea.amountR2(), taxCredit, undefined, undefined, undefined, incomeSubjectToIncomeTax, fixedIncomeProducts, undefined, undefined, undefined);
 /* */
 
 const rcm = new RCM(d0, {

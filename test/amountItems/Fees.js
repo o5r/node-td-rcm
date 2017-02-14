@@ -35,6 +35,8 @@ test('throw on export is data is invalid', t => {
 }, {
   fee: '20',
 }, {
+  fee: 0
+}, {
   fee: 'lol',
   errors: { fees: ['Fees is not a number'] }
 }, {
@@ -42,10 +44,7 @@ test('throw on export is data is invalid', t => {
   errors: { fees: ['Fees must be an integer'] }
 },  {
   fee: -1,
-  errors: { fees: ['Fees must be greater than or equal to 1'] }
-}, {
-  fee: 0,
-  errors: { fees: ['Fees must be greater than or equal to 1'] }
+  errors: { fees: ['Fees must be greater than or equal to 0'] }
 }, {
   fee: 12345678901,
   errors: { fees: ['Fees must be less than or equal to 9999999999'] }

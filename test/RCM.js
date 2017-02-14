@@ -4,20 +4,28 @@ import RCM from '../lib/RCM.js';
 import D0Issuer from '../lib/D0Issuer';
 import R1Recipient from '../lib/R1Recipient';
 import R2Amount from '../lib/R2Amount';
-import IssuerIndicativeArea from '../lib/indicativeArea/IssuerIndicativeArea';
-import RecipientIndicativeArea from '../lib/indicativeArea/RecipientIndicativeArea';
-import AmountIndicativeArea from '../lib/indicativeArea/AmountIndicativeArea';
+import IndicativeArea from '../lib/indicativeArea/IndicativeArea';
 import RecipientAddress from '../lib/address/RecipientAddress';
 import IssuerAddress from '../lib/address/IssuerAddress';
 import {TaxCredit, FixedIncomeProducts, Fees} from '../lib/amountItems';
 
+const indicativeArea = new IndicativeArea({
+  year: '2016',
+  siret: '80426417400017',
+  type: 1
+});
+
+indicativeArea.issuer({
+  socialReason: 'Lendix IFP'
+})
+
+indicativeArea.recipient({
+  recipientCode: 'B'
+});
+
+indicativeArea.amountR2()
+
 function newRecipient() {
-  const recipientIndicativeArea = new RecipientIndicativeArea({
-    year: '2016',
-    siret: '80426417400017',
-    type: 1,
-    recipientCode: 'B'
-  });
   const address = new RecipientAddress({
     zipCode: '75009',
     officeDistributor: 'Paris'
@@ -33,36 +41,25 @@ function newRecipient() {
     city: 'Lyon'
   };
 
-  return new R1Recipient(recipientIndicativeArea, 1, recipient, birth, address);
+  return new R1Recipient(indicativeArea.recipient({ recipientCode: 'B' }), 1, recipient, birth, address);
 }
 
 function newAmount(){
-  const amountIndicativeArea = new AmountIndicativeArea({
-    year: '2016',
-    siret: '80426417400017',
-    type: 1
-  });
   const taxCredit = new TaxCredit({AD: 10});
   const fixedIncomeProducts = new FixedIncomeProducts({AR: 69});
   const fees = new Fees(9);
 
-  return new R2Amount(amountIndicativeArea, taxCredit, undefined, undefined, undefined, undefined, fixedIncomeProducts, undefined, fees, undefined);
+  return new R2Amount(indicativeArea.amountR2(), taxCredit, undefined, undefined, undefined, undefined, fixedIncomeProducts, undefined, fees, undefined);
 }
 
 function newD0Issuer() {
-  const indicativeArea = new IssuerIndicativeArea({
-    year: '2016',
-    siret: '80426417400017',
-    type: 1,
-    socialReason: 'Lendix SA',
-  });
   const address = new IssuerAddress({
     zipCode: '75009',
     officeDistributor: 'Paris',
     issuanceDate: '20161224'
   });
 
-  return new D0Issuer(indicativeArea, address);
+  return new D0Issuer(indicativeArea.issuer({socialReason: 'Lendix SA'}), address);
 }
 
 test('new instance', t => {
