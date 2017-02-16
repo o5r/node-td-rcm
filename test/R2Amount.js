@@ -1,5 +1,5 @@
 import test from 'ava';
-import R2Amount from '../lib/R2Amount.js';
+import R2Amount from '../lib/R2Amount';
 import IndicativeArea from '../lib/indicativeArea/IndicativeArea';
 import AmountIndicativeArea from '../lib/indicativeArea/AmountIndicativeArea';
 import {TaxCredit, FixedIncomeProducts, Fees} from '../lib/amountItems';

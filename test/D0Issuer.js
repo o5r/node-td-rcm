@@ -1,5 +1,5 @@
 import test from 'ava';
-import D0Issuer from '../lib/D0Issuer.js';
+import D0Issuer from '../lib/D0Issuer';
 import IndicativeArea from '../lib/indicativeArea/IndicativeArea';
 import IssuerIndicativeArea from '../lib/indicativeArea/IssuerIndicativeArea';
 import IssuerAddress from '../lib/address/IssuerAddress';

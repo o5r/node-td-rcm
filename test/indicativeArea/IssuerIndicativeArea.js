@@ -1,7 +1,7 @@
 import test from 'ava';
-import ValidationError from '../../lib/ValidationError.js';
+import {ValidationError} from '../../lib/Validation';
 import IndicativeArea from '../../lib/indicativeArea/IndicativeArea';
-import IssuerIndicativeArea from '../../lib/indicativeArea/IssuerIndicativeArea.js';
+import IssuerIndicativeArea from '../../lib/indicativeArea/IssuerIndicativeArea';
 
 const indicativeArea = new IndicativeArea({
   year: '2016',
@@ -58,7 +58,13 @@ test('export', t => {
   errors: {socialReason: ['Social reason is too long (maximum is 50 characters)']}
 }, {
   data: {socialReason: 'Lendix SA', issuerCodeLegalCategory: '2'},
-  errors: {issuerCodeLegalCategory:['Issuer code legal category is the wrong length (should be 4 characters)']}
+  errors: {issuerCodeLegalCategory: ['Issuer code legal category is the wrong length (should be 4 characters)']}
+}, {
+  data: {socialReason: '你好', issuerCodeLegalCategory: '我们法国'},
+  errors: {
+    socialReason:['Social reason can only contain char from Ox20 to 0x7E'],
+    issuerCodeLegalCategory: ['Issuer code legal category can only contain char from Ox20 to 0x7E']
+  }
 }].forEach(({data, errors}) => {
   test(`validation ${JSON.stringify(data)}`, t => {
     const issuerIndicativeArea = indicativeArea.issuer(data);

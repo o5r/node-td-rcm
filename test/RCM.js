@@ -1,3 +1,7 @@
+import cp from 'child_process';
+import fs from 'fs';
+import os from 'os';
+import path from 'path';
 import test from 'ava';
 import RCM from '../lib/RCM.js';
 
@@ -208,4 +212,34 @@ test('export inline', t => {
   rcm.addRecipient(newRecipient(), newAmount());
 
   t.is(rcm.export(true), expectedExport);
+});
+
+test('toFile', t => {
+  const pathFile = path.join(os.tmpdir(), 'ifu-test-tofile.txt');
+  const issuer = newD0Issuer();
+  const rcm = new RCM(issuer);
+
+  rcm.addRecipient(new R1Recipient(indicativeArea.recipient({ recipientCode: 'B' }), 2, {
+    familyname: 'Henry',
+    firstnames: 'Mattéo',
+    sex: 2
+  }, {
+    year: 1980,
+    month: 5,
+    day: 22,
+    departementCode: '69',
+    city: 'Lyon'
+  }, new RecipientAddress({
+    zipCode: '75009',
+    officeDistributor: 'Paris'
+  })), newAmount());
+
+  return rcm.toFile(pathFile).then(() => {
+    t.true(fs.existsSync(pathFile));
+
+    const fileI = cp.execSync(`file -i ${pathFile}`);
+    const charset = fileI.toString().match(/charset=(.*)/);
+
+    t.is(charset[1], 'iso-8859-1');
+  });
 });

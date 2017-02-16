@@ -1,6 +1,6 @@
 import test from 'ava';
-import ValidationError from '../../lib/ValidationError.js';
-import FixedIncomeProducts from '../../lib/amountItems/FixedIncomeProducts.js';
+import {ValidationError} from '../../lib/Validation';
+import FixedIncomeProducts from '../../lib/amountItems/FixedIncomeProducts';
 
 test('create instance', t => {
   const fixedIncomeProducts = new FixedIncomeProducts({ AR: 38 });
