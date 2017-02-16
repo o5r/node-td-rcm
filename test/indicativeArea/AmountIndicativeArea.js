@@ -1,7 +1,7 @@
 import test from 'ava';
-import ValidationError from '../../lib/ValidationError.js';
+import {ValidationError} from '../../lib/Validation';
 import IndicativeArea from '../../lib/indicativeArea/IndicativeArea';
-import AmountIndicativeArea from '../../lib/indicativeArea/AmountIndicativeArea.js';
+import AmountIndicativeArea from '../../lib/indicativeArea/AmountIndicativeArea';
 
 const indicativeArea = new IndicativeArea({
   year: '2016',
@@ -56,6 +56,19 @@ test('export', t => {
     branchCode: ['Branch code is the wrong length (should be 5 characters)'],
     accountNumber: ['Account number is too long (maximum is 14 characters)'],
     key: ['Key is the wrong length (should be 2 characters)']
+  }
+}, {
+  data: {
+    establishmentCode: '你好',
+    branchCode: '你是水獭吗',
+    accountNumber: '你好',
+    key: '你好'
+  },
+  errors: {
+    establishmentCode: ['Establishment code can only contain char from Ox20 to 0x7E'],
+    branchCode: ['Branch code can only contain char from Ox20 to 0x7E'],
+    accountNumber: ['Account number can only contain char from Ox20 to 0x7E'],
+    key: ['Key can only contain char from Ox20 to 0x7E']
   }
 }].forEach(({data, errors}) => {
   test(`validation ${JSON.stringify(data)}`, t => {

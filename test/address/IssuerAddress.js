@@ -1,6 +1,6 @@
 import test from 'ava';
-import ValidationError from '../../lib/ValidationError.js';
-import IssuerAddress from '../../lib/address/IssuerAddress.js';
+import {ValidationError} from '../../lib/Validation';
+import IssuerAddress from '../../lib/address/IssuerAddress';
 
 const minimumValues = {
   streetNumber: 42,
