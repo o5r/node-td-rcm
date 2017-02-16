@@ -1,6 +1,6 @@
 import test from 'ava';
-import ValidationError from '../../lib/ValidationError.js';
-import TaxCredit from '../../lib/amountItems/TaxCredit.js';
+import {ValidationError} from '../../lib/Validation';
+import TaxCredit from '../../lib/amountItems/TaxCredit';
 
 test('create instance', t => {
   const taxCredit = new TaxCredit({ AA: 38 });

@@ -1,5 +1,5 @@
 import test from 'ava';
-import RecipientAddress from '../../lib/address/RecipientAddress.js';
+import RecipientAddress from '../../lib/address/RecipientAddress';
 
 test('set data & type', t => {
   const addr = new RecipientAddress({

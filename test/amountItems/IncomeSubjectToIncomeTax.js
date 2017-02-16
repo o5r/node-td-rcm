@@ -1,6 +1,6 @@
 import test from 'ava';
-import ValidationError from '../../lib/ValidationError.js';
-import IncomeSubjectToIncomeTax from '../../lib/amountItems/IncomeSubjectToIncomeTax.js';
+import {ValidationError} from '../../lib/Validation';
+import IncomeSubjectToIncomeTax from '../../lib/amountItems/IncomeSubjectToIncomeTax';
 
 test('create instance', t => {
   const incomeSubjectToIncomeTax = new IncomeSubjectToIncomeTax({ BS: 38 });

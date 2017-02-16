@@ -1,7 +1,7 @@
 import test from 'ava';
-import ValidationError from '../../lib/ValidationError.js';
+import {ValidationError} from '../../lib/Validation';
 import IndicativeArea from '../../lib/indicativeArea/IndicativeArea';
-import RecipientIndicativeArea from '../../lib/indicativeArea/RecipientIndicativeArea.js';
+import RecipientIndicativeArea from '../../lib/indicativeArea/RecipientIndicativeArea';
 
 const indicativeArea = new IndicativeArea({
   year: '2016',
