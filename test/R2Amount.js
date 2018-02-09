@@ -14,7 +14,7 @@ const amountIndicativeArea = indicativeArea.amountR2();
 
 test('set data', t => {
   const taxCredit = new TaxCredit({AD: 10});
-  const fixedIncomeProducts = new FixedIncomeProducts({AR: 69});
+  const fixedIncomeProducts = new FixedIncomeProducts({KR: 142, KS: 10});
   const fees = new Fees(9);
 
   const r2 = new R2Amount(amountIndicativeArea, taxCredit, undefined, undefined, undefined, undefined, fixedIncomeProducts, undefined, fees, undefined);
@@ -27,7 +27,7 @@ test('set data', t => {
 
 test('validation', t => {
   const taxCredit = new TaxCredit({AD: 10});
-  const fixedIncomeProducts = new FixedIncomeProducts({AR: 69});
+  const fixedIncomeProducts = new FixedIncomeProducts({KR: 142, KS: 10});
   const fees = new Fees(9);
 
   const r2 = new R2Amount(amountIndicativeArea, taxCredit, undefined, undefined, undefined, undefined, fixedIncomeProducts, undefined, fees, undefined);
@@ -37,7 +37,7 @@ test('validation', t => {
 
 test('export', t => {
   const taxCredit = new TaxCredit({AD: 10});
-  const fixedIncomeProducts = new FixedIncomeProducts({AR: 69});
+  const fixedIncomeProducts = new FixedIncomeProducts({KR: 142, KS: 10});
   const fees = new Fees(9);
 
   const r2 = new R2Amount(amountIndicativeArea, taxCredit, undefined, undefined, undefined, undefined, fixedIncomeProducts, undefined, fees, undefined);
@@ -74,9 +74,11 @@ test('export', t => {
     '0000000000',
     '0000000000',
     '0000000000',
-    '0000000069',
-    '0000000000',
-    '                                                                                          ',
+    '          ',
+    '          ',
+    '0000000142',
+    '0000000010',
+    '                                                                      ',
     '0000000000',
     '0000000000',
     '0000000009',

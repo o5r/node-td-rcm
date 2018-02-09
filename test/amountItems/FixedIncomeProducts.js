@@ -14,10 +14,22 @@ test('set data', t => {
   t.deepEqual(fixedIncomeProducts.fixedIncomProducts, { AR: 38, AS: 2});
 });
 
-test('export', t => {
+test('export AR/AS', t => {
   const fixedIncomeProducts = new FixedIncomeProducts({ AR: 38, AS: 2});
 
-  t.deepEqual(fixedIncomeProducts.export(), ['0000000038', '0000000002', '                                                                                          ']);
+  t.deepEqual(fixedIncomeProducts.export(), ['0000000038', '0000000002', '          ', '          ', '                                                                      ']);
+});
+
+test('export KR/KS', t => {
+  const fixedIncomeProducts = new FixedIncomeProducts({ KR: 978, KS: 0});
+
+  t.deepEqual(fixedIncomeProducts.export(), ['          ', '          ', '0000000978', '0000000000', '                                                                      ']);
+});
+
+test('export AR/AS and KR/KS', t => {
+  const fixedIncomeProducts = new FixedIncomeProducts({ AR: 38, AS: 0, KR: 978, KS: 10});
+
+  t.deepEqual(fixedIncomeProducts.export(), ['0000000038', '0000000000', '0000000978', '0000000010', '                                                                      ']);
 });
 
 test('throw on export is data is invalid', t => {
