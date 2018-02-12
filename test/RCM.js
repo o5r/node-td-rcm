@@ -181,8 +181,8 @@ test('export', t => {
     '0000000000',
     '0000000069',
     '0000000000',
-    '          ',
-    '          ',
+    '0000000000',
+    '0000000000',
     '                                                                      ',
     '0000000000',
     '0000000000',
@@ -207,6 +207,7 @@ test('export', t => {
 });
 
 test('export inline', t => {
+  console.log(`${__dirname}/export.txt`);
   const expectedExport = String(require('fs').readFileSync(`${__dirname}/export.txt`));
   const issuer = newD0Issuer();
   const rcm = new RCM(issuer);
