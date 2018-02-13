@@ -11,7 +11,7 @@ test('create instance', t => {
 test('set data', t => {
   const fixedIncomeProducts = new FixedIncomeProducts({ AR: 38, AS: 2});
 
-  t.deepEqual(fixedIncomeProducts.fixedIncomProducts, { AR: 38, AS: 2});
+  t.deepEqual(fixedIncomeProducts.fixedIncomeProducts, { AR: 38, AS: 2});
 });
 
 test('export', t => {
