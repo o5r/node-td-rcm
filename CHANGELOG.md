@@ -2,10 +2,9 @@
 
 ## 0.1.0
 
-- R1 and R2 now uses object in constructors to simplify the addition of new blocks.
+- R1 and R2 now use objects in constructors to simplify the addition of new blocks.
 No backward compatibility.
-- Adding implementation of 2018 `R2Amount.js.crowdfundingProducts`, us the new type `{CrowdfundingProducts}`.
-
+- Adding implementation of 2018 `R2Amount.js.crowdfundingProducts`, use the new type `{CrowdfundingProducts}`.
 
 ## 0.1.0-beta.4
 
