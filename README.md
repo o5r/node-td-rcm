@@ -81,7 +81,7 @@ const crowdfundingProducts = new CrowdfundingProducts({KR: 78, KS: 2});
 const incomeSubjectToIncomeTax = new IncomeSubjectToIncomeTax({BU: 38});
 
 const r2 = new R2Amount({
-  AmountIndicativeArea: indicativeArea.amountR2(), 
+  amountIndicativeArea: indicativeArea.amountR2(), 
   taxCredit,
   incomeSubjectToIncomeTax,
   fixedIncomeProducts,

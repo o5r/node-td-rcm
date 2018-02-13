@@ -11,6 +11,10 @@ No backward compatibility.
 
 Ready with following implementation:
 
+RCM + T0
+- Initialize with D0 and add Rx blocks
+- build RCM final output
+
 D0 Blocks (issuer)
 - issuerIndicativeArea `{}`
 - issuerAddress
@@ -28,3 +32,4 @@ R2 blocks (amount)
 - incomeSubjectToIncomeTax `{IncomeSubjectToIncomeTax}`
 - fixedIncomeProducts `{FixedIncomeProducts}`
 - fees `{Fees}`
+
