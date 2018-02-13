@@ -21,6 +21,7 @@ import {
   R1Recipient,
   TaxCredit,
   FixedIncomeProducts,
+  CrowdfundingProducts,
   IncomeSubjectToIncomeTax,
   R2Amount,
   RCM
@@ -72,9 +73,10 @@ const r1 = new R1Recipient(indicativeArea.recipient({recipientCode: 'B'}), 2, {
  */
 const taxCredit = new TaxCredit({AD: 9});
 const fixedIncomeProducts = new FixedIncomeProducts({AR: 38});
+const crowdfundingProducts = new CrowdfundingProducts({KR: 78, KS: 2});
 const incomeSubjectToIncomeTax = new IncomeSubjectToIncomeTax({BU: 38});
 
-const r2 = new R2Amount(indicativeArea.amountR2(), taxCredit, undefined, undefined, undefined, incomeSubjectToIncomeTax, fixedIncomeProducts, undefined, undefined, undefined);
+const r2 = new R2Amount(indicativeArea.amountR2(), taxCredit, undefined, undefined, undefined, incomeSubjectToIncomeTax, fixedIncomeProducts, crowdfundingProducts, undefined, undefined, undefined);
 /* */
 
 const rcm = new RCM(d0, {
@@ -99,6 +101,6 @@ catch (e) {
 We implemented only what we need:
 
 R3, R4 are not implemented
-Only 4 block are implented on R2
+Only 5 blocks are implemented on R2
 
 Don't hesitate to pull-request new block ;)

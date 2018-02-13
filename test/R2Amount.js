@@ -2,7 +2,7 @@ import test from 'ava';
 import R2Amount from '../lib/R2Amount';
 import IndicativeArea from '../lib/indicativeArea/IndicativeArea';
 import AmountIndicativeArea from '../lib/indicativeArea/AmountIndicativeArea';
-import {TaxCredit, FixedIncomeProducts, Fees} from '../lib/amountItems';
+import {TaxCredit, FixedIncomeProducts, CrowdfundingProducts, Fees} from '../lib/amountItems';
 
 const indicativeArea = new IndicativeArea({
   year: '2016',
@@ -14,33 +14,37 @@ const amountIndicativeArea = indicativeArea.amountR2();
 
 test('set data', t => {
   const taxCredit = new TaxCredit({AD: 10});
-  const fixedIncomeProducts = new FixedIncomeProducts({KR: 142, KS: 10});
+  const fixedIncomeProducts = new FixedIncomeProducts({AR: 142, AS: 10});
+  const crowdfundingProducts = new CrowdfundingProducts({KR: 153, KS: 21});
   const fees = new Fees(9);
 
-  const r2 = new R2Amount(amountIndicativeArea, taxCredit, undefined, undefined, undefined, undefined, fixedIncomeProducts, undefined, fees, undefined);
+  const r2 = new R2Amount(amountIndicativeArea, taxCredit, undefined, undefined, undefined, undefined, fixedIncomeProducts, crowdfundingProducts, undefined, fees, undefined);
 
   t.true(r2.amountIndicativeArea instanceof AmountIndicativeArea);
   t.true(r2.taxCredit instanceof TaxCredit);
   t.true(r2.fixedIncomeProducts instanceof FixedIncomeProducts);
+  t.true(r2.crowdfundingProducts instanceof CrowdfundingProducts);
   t.true(r2.fees instanceof Fees);
 });
 
 test('validation', t => {
   const taxCredit = new TaxCredit({AD: 10});
-  const fixedIncomeProducts = new FixedIncomeProducts({KR: 142, KS: 10});
+  const fixedIncomeProducts = new FixedIncomeProducts({AR: 142, AS: 10});
+  const crowdfundingProducts = new CrowdfundingProducts({KR: 153, KS: 21});
   const fees = new Fees(9);
 
-  const r2 = new R2Amount(amountIndicativeArea, taxCredit, undefined, undefined, undefined, undefined, fixedIncomeProducts, undefined, fees, undefined);
+  const r2 = new R2Amount(amountIndicativeArea, taxCredit, undefined, undefined, undefined, undefined, fixedIncomeProducts, crowdfundingProducts, undefined, fees, undefined);
 
   t.true(r2.validation());
 });
 
 test('export', t => {
   const taxCredit = new TaxCredit({AD: 10});
-  const fixedIncomeProducts = new FixedIncomeProducts({KR: 142, KS: 10});
+  const fixedIncomeProducts = new FixedIncomeProducts({AR: 142, AS: 10});
+  const crowdfundingProducts = new CrowdfundingProducts({KR: 153, KS: 21});
   const fees = new Fees(9);
 
-  const r2 = new R2Amount(amountIndicativeArea, taxCredit, undefined, undefined, undefined, undefined, fixedIncomeProducts, undefined, fees, undefined);
+  const r2 = new R2Amount(amountIndicativeArea, taxCredit, undefined, undefined, undefined, undefined, fixedIncomeProducts, crowdfundingProducts, undefined, fees, undefined);
 
   require('fs').writeFileSync('toto.txt', JSON.stringify(r2.export()));
 
@@ -74,10 +78,10 @@ test('export', t => {
     '0000000000',
     '0000000000',
     '0000000000',
-    '0000000000',
-    '0000000000',
     '0000000142',
     '0000000010',
+    '0000000153',
+    '0000000021',
     '                                                                      ',
     '0000000000',
     '0000000000',

@@ -11,7 +11,7 @@ import R2Amount from '../lib/R2Amount';
 import IndicativeArea from '../lib/indicativeArea/IndicativeArea';
 import RecipientAddress from '../lib/address/RecipientAddress';
 import IssuerAddress from '../lib/address/IssuerAddress';
-import {TaxCredit, FixedIncomeProducts, Fees} from '../lib/amountItems';
+import {TaxCredit, FixedIncomeProducts, CrowdfundingProducts, Fees} from '../lib/amountItems';
 
 const indicativeArea = new IndicativeArea({
   year: '2016',
@@ -51,9 +51,10 @@ function newRecipient() {
 function newAmount(){
   const taxCredit = new TaxCredit({AD: 10});
   const fixedIncomeProducts = new FixedIncomeProducts({AR: 69});
+  const crowdFundingProducts = new CrowdfundingProducts({KR: 952, KS:29});
   const fees = new Fees(9);
 
-  return new R2Amount(indicativeArea.amountR2(), taxCredit, undefined, undefined, undefined, undefined, fixedIncomeProducts, undefined, fees, undefined);
+  return new R2Amount(indicativeArea.amountR2(), taxCredit, undefined, undefined, undefined, undefined, fixedIncomeProducts, crowdFundingProducts, undefined, fees, undefined);
 }
 
 function newD0Issuer() {
@@ -181,8 +182,8 @@ test('export', t => {
     '0000000000',
     '0000000069',
     '0000000000',
-    '0000000000',
-    '0000000000',
+    '0000000952',
+    '0000000029',
     '                                                                      ',
     '0000000000',
     '0000000000',
