@@ -50,22 +50,26 @@ const d0 = new D0Issuer(indicativeArea.issuer({socialReason: 'Loutre SAS'}), iss
 /*
   Article Bénéficiaire R1
  */
-const recipientAddress = new RecipientAddress({
-  zipCode: '75012',
-  officeDistributor: 'Paris'
-});
-
-const r1 = new R1Recipient(indicativeArea.recipient({recipientCode: 'B'}), 2, {
-  familyname: 'Delorme',
-  firstnames: 'George',
-  sex: 1
-}, {
-  year: 1969,
-  month: 6,
-  day: 12,
-  departementCode: '75',
-  city: 'Paris'
-}, recipientAddress);
+const r1 = new R1Recipient({
+  recipientIndicativeArea: indicativeArea.recipient({ recipientCode: 'B' }),
+  recipientType: 2,
+  recipient: {
+    familyname: 'Henry',
+    firstnames: 'Mattéo',
+    sex: 2
+  },
+  birth: {
+    year: 1980,
+    month: 5,
+    day: 22,
+    departementCode: '69',
+    city: 'Lyon'
+  },
+  recipientAddress: new RecipientAddress({
+    zipCode: '75009',
+    officeDistributor: 'Paris'
+  })
+}
 /* */
 
 /*
@@ -76,7 +80,14 @@ const fixedIncomeProducts = new FixedIncomeProducts({AR: 38});
 const crowdfundingProducts = new CrowdfundingProducts({KR: 78, KS: 2});
 const incomeSubjectToIncomeTax = new IncomeSubjectToIncomeTax({BU: 38});
 
-const r2 = new R2Amount(indicativeArea.amountR2(), taxCredit, undefined, undefined, undefined, incomeSubjectToIncomeTax, fixedIncomeProducts, crowdfundingProducts, undefined, undefined, undefined);
+const r2 = new R2Amount({
+  AmountIndicativeArea: indicativeArea.amountR2(), 
+  taxCredit,
+  incomeSubjectToIncomeTax,
+  fixedIncomeProducts,
+  crowdfundingProducts
+  // ...
+});
 /* */
 
 const rcm = new RCM(d0, {
@@ -98,7 +109,7 @@ catch (e) {
 
 ## Implemented items
 
-We implemented only what we need:
+We only implemented what we needed:
 
 R3, R4 are not implemented
 Only 5 blocks are implemented on R2

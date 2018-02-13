@@ -18,7 +18,7 @@ test('set data', t => {
   const crowdfundingProducts = new CrowdfundingProducts({KR: 153, KS: 21});
   const fees = new Fees(9);
 
-  const r2 = new R2Amount(amountIndicativeArea, taxCredit, undefined, undefined, undefined, undefined, fixedIncomeProducts, crowdfundingProducts, undefined, fees, undefined);
+  const r2 = new R2Amount({amountIndicativeArea, taxCredit, fixedIncomeProducts, crowdfundingProducts, fees});
 
   t.true(r2.amountIndicativeArea instanceof AmountIndicativeArea);
   t.true(r2.taxCredit instanceof TaxCredit);
@@ -33,7 +33,7 @@ test('validation', t => {
   const crowdfundingProducts = new CrowdfundingProducts({KR: 153, KS: 21});
   const fees = new Fees(9);
 
-  const r2 = new R2Amount(amountIndicativeArea, taxCredit, undefined, undefined, undefined, undefined, fixedIncomeProducts, crowdfundingProducts, undefined, fees, undefined);
+  const r2 = new R2Amount({amountIndicativeArea, taxCredit, fixedIncomeProducts, crowdfundingProducts, fees});
 
   t.true(r2.validation());
 });
@@ -44,7 +44,7 @@ test('export', t => {
   const crowdfundingProducts = new CrowdfundingProducts({KR: 153, KS: 21});
   const fees = new Fees(9);
 
-  const r2 = new R2Amount(amountIndicativeArea, taxCredit, undefined, undefined, undefined, undefined, fixedIncomeProducts, crowdfundingProducts, undefined, fees, undefined);
+  const r2 = new R2Amount({amountIndicativeArea, taxCredit, fixedIncomeProducts, crowdfundingProducts, fees});
 
   require('fs').writeFileSync('toto.txt', JSON.stringify(r2.export()));
 

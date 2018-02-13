@@ -21,16 +21,16 @@ const indicativeArea = new IndicativeArea({
 
 indicativeArea.issuer({
   socialReason: 'Lendix IFP'
-})
+});
 
 indicativeArea.recipient({
   recipientCode: 'B'
 });
 
-indicativeArea.amountR2()
+indicativeArea.amountR2();
 
 function newRecipient() {
-  const address = new RecipientAddress({
+  const recipientAddress = new RecipientAddress({
     zipCode: '75009',
     officeDistributor: 'Paris'
   });
@@ -45,16 +45,28 @@ function newRecipient() {
     city: 'Lyon'
   };
 
-  return new R1Recipient(indicativeArea.recipient({ recipientCode: 'B' }), 1, recipient, birth, address);
+  return new R1Recipient({
+    recipientIndicativeArea: indicativeArea.recipient({ recipientCode: 'B' }),
+    recipientType:1,
+    recipient,
+    birth,
+    recipientAddress
+  });
 }
 
 function newAmount(){
   const taxCredit = new TaxCredit({AD: 10});
   const fixedIncomeProducts = new FixedIncomeProducts({AR: 69});
-  const crowdFundingProducts = new CrowdfundingProducts({KR: 952, KS:29});
+  const crowdfundingProducts = new CrowdfundingProducts({KR: 952, KS:29});
   const fees = new Fees(9);
 
-  return new R2Amount(indicativeArea.amountR2(), taxCredit, undefined, undefined, undefined, undefined, fixedIncomeProducts, crowdFundingProducts, undefined, fees, undefined);
+  return new R2Amount({
+    amountIndicativeArea: indicativeArea.amountR2(),
+    taxCredit,
+    fixedIncomeProducts,
+    crowdfundingProducts,
+    fees
+  });
 }
 
 function newD0Issuer() {
@@ -222,20 +234,26 @@ test('toFile', t => {
   const issuer = newD0Issuer();
   const rcm = new RCM(issuer);
 
-  rcm.addRecipient(new R1Recipient(indicativeArea.recipient({ recipientCode: 'B' }), 2, {
-    familyname: 'Henry',
-    firstnames: 'Mattéo',
-    sex: 2
-  }, {
-    year: 1980,
-    month: 5,
-    day: 22,
-    departementCode: '69',
-    city: 'Lyon'
-  }, new RecipientAddress({
-    zipCode: '75009',
-    officeDistributor: 'Paris'
-  })), newAmount());
+  rcm.addRecipient(new R1Recipient({
+    recipientIndicativeArea: indicativeArea.recipient({ recipientCode: 'B' }),
+    recipientType: 2,
+    recipient: {
+      familyname: 'Henry',
+      firstnames: 'Mattéo',
+      sex: 2
+    },
+    birth: {
+      year: 1980,
+      month: 5,
+      day: 22,
+      departementCode: '69',
+      city: 'Lyon'
+    },
+    recipientAddress: new RecipientAddress({
+      zipCode: '75009',
+      officeDistributor: 'Paris'
+    })
+  }), newAmount());
 
   return rcm.toFile(pathFile).then(() => {
     t.true(fs.existsSync(pathFile));
