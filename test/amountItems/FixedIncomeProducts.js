@@ -11,13 +11,13 @@ test('create instance', t => {
 test('set data', t => {
   const fixedIncomeProducts = new FixedIncomeProducts({ AR: 38, AS: 2});
 
-  t.deepEqual(fixedIncomeProducts.fixedIncomProducts, { AR: 38, AS: 2});
+  t.deepEqual(fixedIncomeProducts.fixedIncomeProducts, { AR: 38, AS: 2});
 });
 
 test('export', t => {
   const fixedIncomeProducts = new FixedIncomeProducts({ AR: 38, AS: 2});
 
-  t.deepEqual(fixedIncomeProducts.export(), ['0000000038', '0000000002', '                                                                                          ']);
+  t.deepEqual(fixedIncomeProducts.export(), ['0000000038', '0000000002']);
 });
 
 test('throw on export is data is invalid', t => {
@@ -70,5 +70,5 @@ test('throw on export is data is invalid', t => {
 });
 
 test('default', t => {
-  t.deepEqual(FixedIncomeProducts.default(), ['0000000000', '0000000000', '                                                                                          ']);
+  t.deepEqual(FixedIncomeProducts.default(), ['0000000000', '0000000000']);
 });
