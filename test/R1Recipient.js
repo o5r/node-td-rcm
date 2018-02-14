@@ -14,7 +14,7 @@ const indicativeArea = new IndicativeArea({
 const recipientIndicativeArea = indicativeArea.recipient({
   recipientCode: 'B'
 });
-const address = new RecipientAddress({
+const recipientAddress = new RecipientAddress({
   zipCode: '75009',
   officeDistributor: 'Paris'
 });
@@ -30,7 +30,7 @@ test('R1Recipient set data', t => {
     departementCode: '69',
     city: 'Lyon'
   };
-  const r1 = new R1Recipient(recipientIndicativeArea, 1, recipient, birth, address);
+  const r1 = new R1Recipient({ recipientIndicativeArea, recipientType: 1, recipient, birth, recipientAddress });
 
   t.true(r1.recipientIndicativeArea instanceof RecipientIndicativeArea);
   t.true(r1.recipientAddress instanceof RecipientAddress);
@@ -52,7 +52,7 @@ test('R1Recipient validation', t => {
     city: 'Lyon'
   };
 
-  const r1 = new R1Recipient(recipientIndicativeArea, 1, recipient, birth, address);
+  const r1 = new R1Recipient({ recipientIndicativeArea, recipientType: 1, recipient, birth, recipientAddress });
 
   t.true(r1.validation());
 });
@@ -98,7 +98,7 @@ test('R1Recipient validation', t => {
   errors: { socialReason: ['Social reason can\'t be blank'] }
 }].forEach(({ data, errors }) => {
   test(`validation ${JSON.stringify(data)}`, t => {
-    const r1 = new R1Recipient(recipientIndicativeArea, 1, data.recipient, data.birth, address);
+    const r1 = new R1Recipient({ recipientIndicativeArea, recipientType: 1, recipient: data.recipient, birth: data.birth, recipientAddress });
 
     if (!errors) {
       t.true(r1.validation());
@@ -125,7 +125,7 @@ test('R1Recipient export', t => {
     city: 'Lyon'
   };
 
-  const r1 = new R1Recipient(recipientIndicativeArea, 1, recipient, birth, address);
+  const r1 = new R1Recipient({ recipientIndicativeArea, recipientType: 1, recipient, birth, recipientAddress });
 
   t.deepEqual(r1.export(), [
     '2016',
