@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>indicativeArea/IndicativeArea.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Address.html">Address</a></li><li><a href="AmountIndicative.html">AmountIndicative</a></li><li><a href="CrowdfundingProducts.html">CrowdfundingProducts</a><ul class='methods'><li data-type='method'><a href="CrowdfundingProducts.html#export">export</a></li></ul></li><li><a href="D0Issuer.html">D0Issuer</a></li><li><a href="Fees.html">Fees</a></li><li><a href="FixedIncomeProducts.html">FixedIncomeProducts</a></li><li><a href="IncomeSubjectToIncomeTax.html">IncomeSubjectToIncomeTax</a></li><li><a href="IndicativeArea.html">IndicativeArea</a><ul class='methods'><li data-type='method'><a href="IndicativeArea.html#amountR2">amountR2</a></li><li data-type='method'><a href="IndicativeArea.html#issuer">issuer</a></li><li data-type='method'><a href="IndicativeArea.html#recipient">recipient</a></li></ul></li><li><a href="IssuerAddress.html">IssuerAddress</a></li><li><a href="IssuerIndicativeArea.html">IssuerIndicativeArea</a></li><li><a href="R1Recipient.html">R1Recipient</a></li><li><a href="R2Amount.html">R2Amount</a></li><li><a href="RCM.html">RCM</a><ul class='methods'><li data-type='method'><a href="RCM.html#addRecipient">addRecipient</a></li><li data-type='method'><a href="RCM.html#export">export</a></li></ul></li><li><a href="RecipientAddress.html">RecipientAddress</a></li><li><a href="RecipientIndicativeArea.html">RecipientIndicativeArea</a></li><li><a href="T0Totalization.html">T0Totalization</a></li><li><a href="TaxCredit.html">TaxCredit</a></li></ul><h3>Modules</h3><ul><li><a href="module-utils.html">utils</a><ul class='methods'><li data-type='method'><a href="module-utils.html#~fillWith">fillWith</a></li><li data-type='method'><a href="module-utils.html#~fillWithPattern">fillWithPattern</a></li><li data-type='method'><a href="module-utils.html#~wordPad">wordPad</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">indicativeArea/IndicativeArea.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import validate from 'validate.js';
+import {ValidationError, validationChar} from '../Validation';
+
+import IssuerIndicativeArea from './IssuerIndicativeArea';
+import RecipientIndicativeArea from './RecipientIndicativeArea';
+import AmountIndicativeArea from './AmountIndicativeArea';
+
+/**
+ * IndicativeArea Class
+ */
+class IndicativeArea {
+  /**
+   * @param  {Object}  indicativeArea
+   * @param  {String}  indicativeArea.year   D 001 / R 101 / R 201  Année
+   * @param  {String}  indicativeArea.siret  D 002 / R 102 / R 202 Numéro SIRET du déclarant au 31/12/2016
+   * @param  {String}  indicativeArea.type   D 003 / R 103 / R 203 Type de déclaration
+   */
+  constructor(indicativeArea) {
+    this.data = indicativeArea
+  }
+
+  /**
+   * @param  {Object}  issuer
+   * @param  {String}  issuer.socialReason               D 006 Raison sociale (désignation délivrée par l’INSEE)
+   * @param  {Number}  [issuer.issuerCodeLegalCategory]  D 007 Code catégorie juridique du déclarant
+   */
+  issuer(issuer) {
+    return new IssuerIndicativeArea(this, issuer);
+  }
+
+  /**
+   * @param  {Object}  recipient
+   * @param  {String}  [recipient.establishmentCode]  R 104 Code établissement
+   * @param  {String}  [recipient.branchCode]         R 105 Code guichet
+   * @param  {String}  [recipient.accountNumber]      R 106 Numéro de compte ou numéro de contrat
+   * @param  {String}  [recipient.key]                R 107 Clé
+   * @param  {String}  [recipient.accountNature]      R 109 Nature du compte ou du contrat
+   * @param  {String}  [recipient.accountType]        R 110 Type de compte
+   * @param  {String}  recipient.recipientCode        R 111 Code bénéficiaire
+   */
+  recipient(recipient) {
+    return new RecipientIndicativeArea(this, recipient);
+  }
+
+  /**
+   * @param  {Object}  amount
+   * @param  {String}  [amount.establishmentCode]  R 204 Code établissement
+   * @param  {String}  [amount.branchCode]         R 205 Code guichet
+   * @param  {String}  [amount.accountNumber]      R 206 Numéro de compte ou numéro de contrat
+   * @param  {String}  [amount.key]                R 207 Clé
+   */
+  amountR2(amount) {
+    return new AmountIndicativeArea(this, 'R2', amount);
+  }
+
+  export() {
+    this.validation();
+
+    return[
+      this.data.year,
+      this.data.siret,
+      this.data.type,
+    ];
+  }
+
+  validation() {
+    const commonSchema = {
+      year: {
+        presence: true,
+        length: { is: 4 },
+        ...validationChar
+      },
+      siret: {
+        presence: true,
+        length: { is: 14 },
+        ...validationChar
+      },
+      type: {
+        presence: true,
+        numericality: {
+          onlyInteger: true,
+          greaterThanOrEqualTo: 1,
+          lessThanOrEqualTo: 2
+        }
+      }
+    };
+
+    const invalid = validate(this.data, commonSchema);
+
+    if (invalid) {
+      throw new ValidationError(invalid);
+    } else {
+      return true;
+    }
+  }
+}
+
+export default IndicativeArea;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Feb 14 2018 15:26:23 GMT+0000 (UTC) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Home - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Address.html">Address</a></li><li><a href="AmountIndicative.html">AmountIndicative</a></li><li><a href="CrowdfundingProducts.html">CrowdfundingProducts</a><ul class='methods'><li data-type='method'><a href="CrowdfundingProducts.html#export">export</a></li></ul></li><li><a href="D0Issuer.html">D0Issuer</a></li><li><a href="Fees.html">Fees</a></li><li><a href="FixedIncomeProducts.html">FixedIncomeProducts</a></li><li><a href="IncomeSubjectToIncomeTax.html">IncomeSubjectToIncomeTax</a></li><li><a href="IndicativeArea.html">IndicativeArea</a><ul class='methods'><li data-type='method'><a href="IndicativeArea.html#amountR2">amountR2</a></li><li data-type='method'><a href="IndicativeArea.html#issuer">issuer</a></li><li data-type='method'><a href="IndicativeArea.html#recipient">recipient</a></li></ul></li><li><a href="IssuerAddress.html">IssuerAddress</a></li><li><a href="IssuerIndicativeArea.html">IssuerIndicativeArea</a></li><li><a href="R1Recipient.html">R1Recipient</a></li><li><a href="R2Amount.html">R2Amount</a></li><li><a href="RCM.html">RCM</a><ul class='methods'><li data-type='method'><a href="RCM.html#addRecipient">addRecipient</a></li><li data-type='method'><a href="RCM.html#export">export</a></li></ul></li><li><a href="RecipientAddress.html">RecipientAddress</a></li><li><a href="RecipientIndicativeArea.html">RecipientIndicativeArea</a></li><li><a href="T0Totalization.html">T0Totalization</a></li><li><a href="TaxCredit.html">TaxCredit</a></li></ul><h3>Modules</h3><ul><li><a href="module-utils.html">utils</a><ul class='methods'><li data-type='method'><a href="module-utils.html#~fillWith">fillWith</a></li><li data-type='method'><a href="module-utils.html#~fillWithPattern">fillWithPattern</a></li><li data-type='method'><a href="module-utils.html#~wordPad">wordPad</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+    <section class="readme">
+        <article><h1>TD/RCM ifu generator</h1><p><strong>T</strong>ransfert des <strong>d</strong>éclarations de <strong>r</strong>evenus de <strong>c</strong>apitaux <strong>m</strong>obiliers par procédé informatique</p>
+<p><a href="https://app.codeship.com/projects/199198"><img src="https://img.shields.io/codeship/c1590490-c92d-0134-076b-6a795a0b4831/master.svg" alt="Codeship"></a> <a href="https://www.npmjs.com/package/td-rcm"><img src="https://img.shields.io/npm/dt/td-rcm.svg" alt="npm"></a> <a href="https://www.npmjs.com/package/td-rcm"><img src="https://img.shields.io/npm/v/td-rcm.svg" alt="npm"></a> <a href="https://github.com/Lendix/node-td-rcm/blob/master/LICENSE.md"><img src="https://img.shields.io/github/license/lendix/node-td-rcm.svg" alt="license"></a></p>
+<h2>Install</h2><pre class="prettyprint source lang-JavaScript"><code>npm i td-rcm</code></pre><h2>Usage</h2><pre class="prettyprint source"><code>import {
+  IndicativeArea,
+  IssuerAddress,
+  D0Issuer,
+  RecipientAddress,
+  R1Recipient,
+  TaxCredit,
+  FixedIncomeProducts,
+  CrowdfundingProducts,
+  IncomeSubjectToIncomeTax,
+  R2Amount,
+  RCM
+} from 'td-rcm';
+
+const indicativeArea = new IndicativeArea({
+  year: '2016',
+  siret: '12345678912345',
+  type: 1
+});
+
+/*
+  Article déclarant D0
+ */
+const issuerAddress = new IssuerAddress({
+  zipCode: '75009',
+  streetNumber: '42',
+  streetName: 'Rue des loutres',
+  officeDistributor: 'Paris',
+  issuanceDate: '20161224'
+});
+
+const d0 = new D0Issuer(indicativeArea.issuer({socialReason: 'Loutre SAS'}), issuerAddress);
+/* */
+
+/*
+  Article Bénéficiaire R1
+ */
+const r1 = new R1Recipient({
+  recipientIndicativeArea: indicativeArea.recipient({ recipientCode: 'B' }),
+  recipientType: 2,
+  recipient: {
+    familyname: 'Henry',
+    firstnames: 'Mattéo',
+    sex: 2
+  },
+  birth: {
+    year: 1980,
+    month: 5,
+    day: 22,
+    departementCode: '69',
+    city: 'Lyon'
+  },
+  recipientAddress: new RecipientAddress({
+    zipCode: '75009',
+    officeDistributor: 'Paris'
+  })
+}
+/* */
+
+/*
+  Article Montant R2
+ */
+const taxCredit = new TaxCredit({AD: 9});
+const fixedIncomeProducts = new FixedIncomeProducts({AR: 38});
+const crowdfundingProducts = new CrowdfundingProducts({KR: 78, KS: 2});
+const incomeSubjectToIncomeTax = new IncomeSubjectToIncomeTax({BU: 38});
+
+const r2 = new R2Amount({
+  amountIndicativeArea: indicativeArea.amountR2(), 
+  taxCredit,
+  incomeSubjectToIncomeTax,
+  fixedIncomeProducts,
+  crowdfundingProducts
+  // ...
+});
+/* */
+
+const rcm = new RCM(d0, {
+  fullname: 'Robert Patron',
+  phone: '0123456789',
+  email: 'robert@patron.com'
+});
+
+rcm.addRecipient(r1, r2);
+
+try {
+  const ex = rcm.export(true);
+}
+catch (e) {
+  console.log(e)
+}</code></pre><h2>Implemented items</h2><p>We only implemented what we needed:</p>
+<p>R3, R4 are not implemented
+Only 5 blocks are implemented on R2</p>
+<p>Don't hesitate to pull-request new block ;)</p></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Feb 14 2018 15:26:23 GMT+0000 (UTC) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

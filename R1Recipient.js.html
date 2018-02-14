@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>R1Recipient.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Address.html">Address</a></li><li><a href="AmountIndicative.html">AmountIndicative</a></li><li><a href="CrowdfundingProducts.html">CrowdfundingProducts</a><ul class='methods'><li data-type='method'><a href="CrowdfundingProducts.html#export">export</a></li></ul></li><li><a href="D0Issuer.html">D0Issuer</a></li><li><a href="Fees.html">Fees</a></li><li><a href="FixedIncomeProducts.html">FixedIncomeProducts</a></li><li><a href="IncomeSubjectToIncomeTax.html">IncomeSubjectToIncomeTax</a></li><li><a href="IndicativeArea.html">IndicativeArea</a><ul class='methods'><li data-type='method'><a href="IndicativeArea.html#amountR2">amountR2</a></li><li data-type='method'><a href="IndicativeArea.html#issuer">issuer</a></li><li data-type='method'><a href="IndicativeArea.html#recipient">recipient</a></li></ul></li><li><a href="IssuerAddress.html">IssuerAddress</a></li><li><a href="IssuerIndicativeArea.html">IssuerIndicativeArea</a></li><li><a href="R1Recipient.html">R1Recipient</a></li><li><a href="R2Amount.html">R2Amount</a></li><li><a href="RCM.html">RCM</a><ul class='methods'><li data-type='method'><a href="RCM.html#addRecipient">addRecipient</a></li><li data-type='method'><a href="RCM.html#export">export</a></li></ul></li><li><a href="RecipientAddress.html">RecipientAddress</a></li><li><a href="RecipientIndicativeArea.html">RecipientIndicativeArea</a></li><li><a href="T0Totalization.html">T0Totalization</a></li><li><a href="TaxCredit.html">TaxCredit</a></li></ul><h3>Modules</h3><ul><li><a href="module-utils.html">utils</a><ul class='methods'><li data-type='method'><a href="module-utils.html#~fillWith">fillWith</a></li><li data-type='method'><a href="module-utils.html#~fillWithPattern">fillWithPattern</a></li><li data-type='method'><a href="module-utils.html#~wordPad">wordPad</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">R1Recipient.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import validate from 'validate.js';
+import {ValidationError} from './Validation';
+import {wordPad, numberPad, fillWith} from './utils.js';
+
+/**
+ * R1Recipient Class
+ *
+ * R 1 Zone
+ */
+class R1Recipient {
+  /**
+   * @param  {Object} blocks
+   * @param  {RecipientIndicativeArea} [blocks.recipientIndicativeArea]
+   * @param  {Number} [blocks.recipientType]
+   * @param  {Object} [blocks.recipient]
+   * @param  {Number} [blocks.recipient.siret]           R 112 SIRET bénéficiaire
+   * @param  {String} [blocks.recipient.socialReason]    R 113 Raison social (mandatory for corporate)
+   * @param  {String} [blocks.recipient.familyname]      R 114 Nom de famille (mandatory for physical person)
+   * @param  {String} [blocks.recipient.firstnames]      R 115 Prénoms (ordre état civil) (mandatory for physical person)
+   * @param  {String} [blocks.recipient.name]            R 116 Nom d'usage
+   * @param  {Number} [blocks.recipient.sex]             R 118 Code sexe (mandatory for physical person)
+   * @param  {Object} [blocks.birth]
+   * @param  {Number} [blocks.birth.year]                R 119 Année (format YYYYMMDD)
+   * @param  {Number} [blocks.birth.month]               R 120 Mois (format MM)
+   * @param  {Number} [blocks.birth.day]                 R 121 Jour (format DD)
+   * @param  {String} [blocks.birth.departementCode]     R 122 Code département
+   * @param  {String} [blocks.birth.cityCode]            R 123 Code commune
+   * @param  {String} [blocks.birth.city]                R 124 Libellé commune
+   * @param  {String} [blocks.birth.job]                 R 126 Profession
+   * @param  {RecipientAddress} [blocks.recipientAddress]
+   */
+  constructor(blocks) {
+    [
+      'recipientIndicativeArea',
+      'recipientType',
+      'recipient',
+      'birth',
+      'recipientAddress'
+    ].forEach((blockName) => {
+      this[blockName] = blocks[blockName]
+    });
+  }
+
+  export() {
+    this.validation();
+
+    return [
+      ...this.recipientIndicativeArea.export(),
+      numberPad(this.recipient.siret, 14),
+      wordPad(this.recipient.socialReason, 50),
+      wordPad(this.recipient.familyname, 30),
+      wordPad(this.recipient.firstnames, 20),
+      wordPad(this.recipient.name, 30),
+      fillWith(' ', 20),
+      wordPad(this.recipient.sex, 1),
+
+      this.birth.year,
+      numberPad(this.birth.month, 2),
+      numberPad(this.birth.day, 2),
+      this.birth.departementCode,
+      numberPad(this.birth.cityCode, 3),
+      wordPad(this.birth.city, 26),
+      ' ',
+      wordPad(this.birth.job, 30),
+
+      ...this.recipientAddress.export()
+    ];
+  }
+
+  validation() {
+    this.recipientIndicativeArea.validation();
+    this.recipientAddress.validation();
+
+    const recipientSchema = {
+      siret: {
+        length: { is: 14 }
+      },
+      socialReason: {
+        presence: (this.recipientType === 1),
+        length: { maximum: 50 }
+      },
+      familyname: {
+        presence: (this.recipientType === 2),
+        length: { maximum: 30 }
+      },
+      firstnames: {
+        presence: (this.recipientType === 2),
+        length: { maximum: 20 }
+      },
+      name: {
+        length: { maximum: 30 }
+      },
+      sex: {
+        presence: (this.recipientType === 2),
+        numericality: {
+          onlyInteger: true,
+          greaterThanOrEqualTo: 1,
+          lessThanOrEqualTo: 2
+        }
+      }
+    };
+
+    const birthSchema = {
+      year: {
+        presence: true,
+        numericality: {
+          onlyInteger: true,
+          greaterThanOrEqualTo: 1900,
+          lessThanOrEqualTo: 2999
+        }
+      },
+      month: {
+        presence: true,
+        numericality: {
+          onlyInteger: true,
+          greaterThanOrEqualTo: 1,
+          lessThanOrEqualTo: 12
+        }
+      },
+      day: {
+        presence: true,
+        numericality: {
+          onlyInteger: true,
+          greaterThanOrEqualTo: 1,
+          lessThanOrEqualTo: 31
+        }
+      },
+      departementCode: {
+        presence: true,
+        length: { is: 2 }
+      },
+      cityCode: {
+        length: { is: 3 }
+      },
+      city: {
+        presence: true,
+        length: { maximum: 26 }
+      },
+      job: {
+        length: { maximum: 30 }
+      }
+    };
+
+    const invalid = validate(this.recipient, recipientSchema);
+    const invalid2 = validate(this.birth, birthSchema);
+
+    if (invalid) {
+      throw new ValidationError(invalid);
+    }
+
+    if (invalid2) {
+      throw new ValidationError(invalid2);
+    }
+
+    return true;
+  }
+}
+
+export default R1Recipient;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Feb 14 2018 15:26:23 GMT+0000 (UTC) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
