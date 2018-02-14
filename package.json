@@ -1,5 +1,5 @@
 {
-  "name": "@lendix/td-rcm",
+  "name": "td-rcm",
   "version": "0.1.0",
   "description": "",
   "main": "dist/index.js",
