@@ -215,7 +215,8 @@ test('export', t => {
     '                                                  ',
     '0000000000',
     '                                                            ',
-    '                                                                                                                                                                                                                                   '
+    '804264174',
+    '                                                                                                                                                                                                                          '
   ]);
 });
 
@@ -258,7 +259,7 @@ test('toFile', t => {
   return rcm.toFile(pathFile).then(() => {
     t.true(fs.existsSync(pathFile));
 
-    const fileI = cp.execSync(`file -i ${pathFile}`);
+    const fileI = cp.execSync(`file -i ${pathFile}`); // `file -i` on Linux, `file -I` on macOS
     const charset = fileI.toString().match(/charset=(.*)/);
 
     t.is(charset[1], 'iso-8859-1');
