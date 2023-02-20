@@ -1,6 +1,6 @@
 {
   "name": "td-rcm",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -12,11 +12,11 @@
     "prepublish": "in-publish && npm run my-prepublish || not-in-publish",
     "test": "ava --verbose"
   },
-  "author": "Lendix",
+  "author": "October",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:Lendix/node-td-rcm.git"
+    "url": "git@github.com:o5r/node-td-rcm.git"
   },
   "devDependencies": {
     "ava": "^0.17.0",
