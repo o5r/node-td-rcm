@@ -73,8 +73,12 @@ test('R1Recipient validation', t => {
 }, {
   data: {
     recipient: {
-      socialReason: 'Lendix SA'
+      socialReason: 'Lendix SA',
+      firstnames: "foo",
+      familyname: "bar",
+      sex: 1
     },
+    recipientType: 2,
     birth: {
       year: 1980,
       month: 5,
@@ -98,7 +102,7 @@ test('R1Recipient validation', t => {
   errors: { socialReason: ['Social reason can\'t be blank'] }
 }].forEach(({ data, errors }) => {
   test(`validation ${JSON.stringify(data)}`, t => {
-    const r1 = new R1Recipient({ recipientIndicativeArea, recipientType: 1, recipient: data.recipient, birth: data.birth, recipientAddress });
+    const r1 = new R1Recipient({ recipientIndicativeArea, recipientType: data.recipientType || 1, recipient: data.recipient, birth: data.birth, recipientAddress });
 
     if (!errors) {
       t.true(r1.validation());
@@ -146,7 +150,7 @@ test('R1Recipient export', t => {
     '                              ',
     '                    ',
     ' ',
-    1980,
+    '1980',
     '05',
     '22',
     '69',
